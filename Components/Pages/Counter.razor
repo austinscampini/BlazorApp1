@@ -1,0 +1,35 @@
+﻿@page "/counter"
+@using Microsoft.VisualBasic
+@using SpotifyAPI.Web
+@using SpotifyAPI;
+@rendermode InteractiveServer
+@inject IConfiguration Configuration
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<p @onclick="IncrementCount">Track Name : @trackName</p>
+
+
+@code {
+    private String trackName = "Loading";
+    private async void IncrementCount()
+    {
+        
+      var config = SpotifyClientConfig.CreateDefault();
+
+      var request = new ClientCredentialsRequest(@Configuration["Spotify:CLIENT_ID"], @Configuration["Spotify:SECRET"]);
+
+      var response = await new OAuthClient(config).RequestToken(request);
+        
+      var spotify = new SpotifyClient(response);
+
+      var track = await spotify.Tracks.Get("6Kea3ZUA2pFUmjITKadcln");
+      Console.WriteLine(track.Name);
+      trackName = track.Name;
+    }
+
+}
