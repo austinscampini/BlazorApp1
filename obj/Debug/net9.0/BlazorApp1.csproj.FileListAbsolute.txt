@@ -83,3 +83,4 @@ C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\bin\Debug\net9.0\Sp
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\bin\Debug\net9.0\Swan.Lite.dll
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.AssemblyReference.cache
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.Up2Date
+C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\BlazorApp1.sourcelink.json

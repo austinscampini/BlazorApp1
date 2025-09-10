@@ -5,18 +5,49 @@
 @rendermode InteractiveServer
 @inject IConfiguration Configuration
 
+//My Spotify User ID : 21tjo6kw2m3xmughfqwygtrfy
+
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="GetPlaylist">Click me</button>
 
-<p @onclick="IncrementCount">Track Name : @trackName</p>
+<p>Track Name : @trackName</p>
 
+@if (Tracks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+     <thead>
+            <tr>
+                <th>Date</th>
+                <th aria-label="PlayList Name">@Tracks.</th>
+                <th>Track List</th>
+            </tr>
+        </thead>
+    <table class="table">
+        <tbody>
+            @foreach (var Track in Tracks)
+            {
+                <tr>
+                    <td>@Track.Album.ToString</td>
+                    <td>@Track.Artists</td>
+                    <td>@Track.Name</td>
+                    <td>@Track</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
     private String trackName = "Loading";
-    private async void IncrementCount()
+    public List<FullTrack> Tracks { get; set; } = new List<FullTrack>();
+    public String playlistName = "Loading";
+    private async void getTrackInfo()
     {
         
       var config = SpotifyClientConfig.CreateDefault();
@@ -30,6 +61,29 @@
       var track = await spotify.Tracks.Get("6Kea3ZUA2pFUmjITKadcln");
       Console.WriteLine(track.Name);
       trackName = track.Name;
+    }
+
+    private async void GetPlaylist() 
+    {
+      var config = SpotifyClientConfig.CreateDefault();
+
+      var request = new ClientCredentialsRequest(@Configuration["Spotify:CLIENT_ID"], @Configuration["Spotify:SECRET"]);
+
+      var response = await new OAuthClient(config).RequestToken(request);
+        
+      var spotify = new SpotifyClient(response);
+
+      var playlist = await spotify.Playlists.Get("4bdpl8pjuQ7O5MBtiXEzpM");
+
+      var allItems = await spotify.PaginateAll(playlist.Tracks);
+
+      foreach (var item in allItems)
+      {
+        if (item.Track is FullTrack track)
+        {
+          Tracks.Add(track);
+        }
+      }
     }
 
 }
