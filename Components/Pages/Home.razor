@@ -1,35 +1,73 @@
 ﻿@page "/"
-@using Microsoft.AspNetCore.Mvc.RazorPages
-@using Microsoft.VisualBasic
 @using SpotifyAPI.Web
-@using SpotifyAPI;
-@using System.Reflection.Metadata
-@rendermode InteractiveServer
+@using System
+@using Microsoft.Extensions.Configuration
+
 @inject IConfiguration Configuration
+@inject NavigationManager navManager
 
-<PageTitle>Home</PageTitle>
+<h1>Hello, world!</h1>
 
-<p OnGet()></p>
+<p>
 
-@code 
+</p>
+
+@if (_isAuthed && _me != null)
 {
-    public class IndexModel : PageModel
+  <h2>Welcome @_me.DisplayName!</h2>
+  <p>
+    You have a grant total of @_totalPlaylistCount playlists!
+  </p>
+}
+else
+{
+  <span>To get started:</span>
+  <a href="@_authUri">
+    Login via Spotify
+  </a>
+}
+
+@code {
+  private bool _isAuthed = false;
+
+  private PrivateUser _me;
+
+  private int? _totalPlaylistCount;
+
+  private Uri _authUri;
+
+  protected override void OnInitialized()
+  {
+    if (!string.IsNullOrEmpty(@Configuration["Spotify:CLIENT_ID"]))
     {
-      public string Message { get; set; }
+      var baseUri = navManager.ToAbsoluteUri("http://127.0.0.1:5267/");
 
-        public void OnGet()
-        {
-            // Code here runs when the page is loaded via a GET request.
-            Message = "Welcome to the page!";
-            // You can fetch data, set up initial state, etc.
-        }
-
-        // Or, for asynchronous operations:
-        public async Task OnGetAsync()
-        {
-            // Asynchronously fetch data or perform other setup.
-            await Task.Delay(100); // Simulate an async operation
-            Message = "Welcome asynchronously!";
-        }
+      var loginRequest = new LoginRequest(baseUri, @Configuration["Spotify:CLIENT_ID"], LoginRequest.ResponseType.Token)
+      {
+        Scope = new[] { Scopes.PlaylistReadPrivate, Scopes.PlaylistReadCollaborative }
+      };
+      _authUri = loginRequest.ToUri();
     }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    var uri = new Uri("http://localhost:5267/");
+    var maxLen = Math.Min(1, uri.Fragment.Length);
+    Dictionary<string, string> fragmentParams = uri.Fragment.Substring(maxLen)?
+      .Split("&", StringSplitOptions.RemoveEmptyEntries)?
+      .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
+      .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
+
+    Console.WriteLine(fragmentParams);
+
+    _isAuthed = fragmentParams.ContainsKey("access_token");
+    if (_isAuthed)
+    {
+      var spotify = new SpotifyClient(fragmentParams["access_token"]);
+
+      _me = await spotify.UserProfile.Current();
+      _totalPlaylistCount = (await spotify.Playlists.CurrentUsers()).Total;
+    }
+  }
 }
