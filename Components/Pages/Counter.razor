@@ -2,18 +2,9 @@
 @using Microsoft.VisualBasic
 @using SpotifyAPI.Web
 @using SpotifyAPI;
+@using Swan.Threading
 @rendermode InteractiveServer
 @inject IConfiguration Configuration
-
-//My Spotify User ID : 21tjo6kw2m3xmughfqwygtrfy
-
-<PageTitle>Counter</PageTitle>
-
-<h1>Counter</h1>
-
-<button class="btn btn-primary" @onclick="GetPlaylist">Click me</button>
-
-<p>Track Name : @trackName</p>
 
 @if (Tracks == null)
 {
@@ -21,10 +12,10 @@
 }
 else
 {
+        <PageTitle>@playlistName</PageTitle>
+        <h1>@playlistName</h1>
      <thead>
             <tr>
-                <th>Date</th>
-                <th aria-label="PlayList Name">@Tracks.</th>
                 <th>Track List</th>
             </tr>
         </thead>
@@ -33,10 +24,9 @@ else
             @foreach (var Track in Tracks)
             {
                 <tr>
-                    <td>@Track.Album.ToString</td>
-                    <td>@Track.Artists</td>
+                    <td>@Track.Album.Name</td>
+                    <td>@Track.Artists.</td>
                     <td>@Track.Name</td>
-                    <td>@Track</td>
                 </tr>
             }
         </tbody>
@@ -44,25 +34,15 @@ else
 }
 
 @code {
-    private String trackName = "Loading";
-    public List<FullTrack> Tracks { get; set; } = new List<FullTrack>();
-    public String playlistName = "Loading";
-    private async void getTrackInfo()
+    private List<FullTrack> Tracks { get; set; } = new List<FullTrack>();
+    private String playlistName = "Loading";
+
+    protected override async Task OnInitializedAsync()
     {
         
-      var config = SpotifyClientConfig.CreateDefault();
-
-      var request = new ClientCredentialsRequest(@Configuration["Spotify:CLIENT_ID"], @Configuration["Spotify:SECRET"]);
-
-      var response = await new OAuthClient(config).RequestToken(request);
-        
-      var spotify = new SpotifyClient(response);
-
-      var track = await spotify.Tracks.Get("6Kea3ZUA2pFUmjITKadcln");
-      Console.WriteLine(track.Name);
-      trackName = track.Name;
+        await Task.Delay(1000); 
+        GetPlaylist();
     }
-
     private async void GetPlaylist() 
     {
       var config = SpotifyClientConfig.CreateDefault();
@@ -75,6 +55,8 @@ else
 
       var playlist = await spotify.Playlists.Get("4bdpl8pjuQ7O5MBtiXEzpM");
 
+      playlistName = playlist.Name;
+
       var allItems = await spotify.PaginateAll(playlist.Tracks);
 
       foreach (var item in allItems)
@@ -84,6 +66,8 @@ else
           Tracks.Add(track);
         }
       }
+
+      StateHasChanged();
     }
 
 }
