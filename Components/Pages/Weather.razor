@@ -38,6 +38,7 @@ else
 
 @code {
     private WeatherForecast[]? forecasts;
+    private String songCode{ get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,6 +53,11 @@ else
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = summaries[Random.Shared.Next(summaries.Length)]
         }).ToArray();
+    }
+
+    protected override void OnParametersSet()
+    {
+        String test = songCode;
     }
 
     private class WeatherForecast

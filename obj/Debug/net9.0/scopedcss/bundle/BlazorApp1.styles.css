@@ -10,12 +10,12 @@ main[b-j65y7q72mt] {
 }
 
 .sidebar[b-j65y7q72mt] {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-image: linear-gradient(180deg, #7c1f33 0%, #f4adaf 70%);
 }
 
 .top-row[b-j65y7q72mt] {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
+    background-color: #fef2f2;
+    border-bottom: 1px solid #ed7f84;
     justify-content: flex-end;
     height: 3.5rem;
     display: flex;

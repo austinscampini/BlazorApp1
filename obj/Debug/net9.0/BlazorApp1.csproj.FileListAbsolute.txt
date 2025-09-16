@@ -20,7 +20,6 @@ C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\sc
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\scopedcss\bundle\BlazorApp1.styles.css
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\scopedcss\projectbundle\BlazorApp1.bundle.scp.css
-C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\psnyflj9j1-khy4lop6wu.gz
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\xscm68l0ox-bqjiyaj88i.gz
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\a413awwuph-c2jlpeoesf.gz
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\hbq4d3qinw-erw9l3u2r3.gz
@@ -65,8 +64,6 @@ C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\co
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\lak9eq6uf2-h1s4sie4z3.gz
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\n6o7eave8d-63fj8s7r0e.gz
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\6oxp0jmi7q-0j3bgjxly4.gz
-C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\ysu4imbah3-uin0erjt0i.gz
-C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\uxxncn5hnr-uin0erjt0i.gz
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\staticwebassets.development.json
@@ -84,3 +81,6 @@ C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\bin\Debug\net9.0\Sw
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.AssemblyReference.cache
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\BlazorApp1.csproj.Up2Date
 C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\BlazorApp1.sourcelink.json
+C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\psnyflj9j1-xo8p9x79cl.gz
+C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\ysu4imbah3-40w5yhz9wz.gz
+C:\Users\austi\OneDrive\Documents\Blazor Projects\BlazorApp1\obj\Debug\net9.0\compressed\uxxncn5hnr-40w5yhz9wz.gz
