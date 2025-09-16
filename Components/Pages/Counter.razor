@@ -25,7 +25,6 @@ else
             {
                 <tr>
                     <td>@Track.Album.Name</td>
-                    <td>@Track.Artists.</td>
                     <td>@Track.Name</td>
                 </tr>
             }
@@ -40,7 +39,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         
-        await Task.Delay(1000); 
+        await Task.Delay(10); 
         GetPlaylist();
     }
     private async void GetPlaylist() 
