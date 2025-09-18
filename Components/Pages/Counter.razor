@@ -15,18 +15,25 @@
 }
 else
 {
-        <PageTitle>@playlistName</PageTitle>
-        <h1>@playlistName</h1>
      <thead>
             <tr>
-                <th>Track List</th>
+                <div class="playlist-header">
+                <div class="playlist-cover">♪</div>
+                </div>
+                 <div class="playlist-info">
+                    <h1 class="playlist-title">@playlistName</h1>
+                    <span>@trackCount songs,</span> <span>about @playlistLengthHours hr @playlistLengthMinutes min</span>
+                </div>
             </tr>
         </thead>
-    <table class="interactive-table">
+    <table>
+    <!-- Track List -->
+
         <tbody>
             @foreach (var Track in Tracks)
             {
-                <tr href="/weather/@Track.Id">
+
+                <tr class="interactive-table" href="/">
                     <td>@Track.Album.Name</td>
                     <td>@Track.Name</td>
                 </tr>
@@ -38,6 +45,10 @@ else
 @code {
     private List<FullTrack> Tracks { get; set; } = new List<FullTrack>();
     private String playlistName = "Loading";
+    private String playlistDescription = "Loading";
+    private int trackCount = 0;
+    private int playlistLengthHours = 0;
+    private int playlistLengthMinutes = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -57,7 +68,10 @@ else
 
         var playlist = await spotify.Playlists.Get("4bdpl8pjuQ7O5MBtiXEzpM");
 
+        int playlistTimeLength = 0;
+
         playlistName = playlist.Name;
+        playlistDescription = playlist.Description;
 
         var allItems = await spotify.PaginateAll(playlist.Tracks);
 
@@ -66,8 +80,13 @@ else
             if (item.Track is FullTrack track)
             {
                 Tracks.Add(track);
+                trackCount++;
+                playlistTimeLength += (track.DurationMs/60000);
             }
         }
+
+        playlistLengthHours = playlistTimeLength / 60;
+        playlistLengthMinutes =  playlistTimeLength % 60;
 
         StateHasChanged();
     }
