@@ -16,7 +16,7 @@
 else
 {
      <thead>
-            <tr>
+            <div>
                 <div class="playlist-header">
                 <div class="playlist-cover">♪</div>
                 </div>
@@ -24,7 +24,7 @@ else
                     <h1 class="playlist-title">@playlistName</h1>
                     <span>@trackCount songs,</span> <span>about @playlistLengthHours hr @playlistLengthMinutes min</span>
                 </div>
-            </tr>
+            </div>
         </thead>
     <table>
     <!-- Track List -->
@@ -33,7 +33,7 @@ else
             @foreach (var Track in Tracks)
             {
 
-                <tr class="interactive-table" href="/">
+                <tr class="interactive-table">
                     <td>@Track.Album.Name</td>
                     <td>@Track.Name</td>
                 </tr>
