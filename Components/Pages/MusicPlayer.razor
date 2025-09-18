@@ -1,0 +1,54 @@
+@page "/musicplayer/{songCode}"
+
+@using SpotifyAPI.Web
+@using SpotifyAPI;
+@using Swan.Threading
+@using Microsoft.AspNetCore.WebUtilities;
+@rendermode InteractiveServer
+@inject IConfiguration Configuration
+
+    <div class="album-cover">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoaPo6yVwnFQE6MTmc2yRJIBf-uYKo_u34-A&s" alt="Album Cover" />
+    </div>
+    
+    <div class="song-info">
+        <div class="song-title">@songCode</div>
+        <div class="song-artist"></div>
+    </div>
+    
+    <div class="controls">
+        <button class="control-btn" ">⏮</button>
+        <button id="play-button" class="control-btn play-pause">▶</button>
+        <button class="control-btn">⏭</button>
+    </div>
+
+
+
+@code {
+    [Parameter]    
+    public String songCode{ get; set; }
+    public String songTitle = "Loading";
+    public String songArtist = "Loading";
+    public String songImg = "Loading";
+
+
+
+    private async void GetSongInfo() 
+    {
+        var config = SpotifyClientConfig.CreateDefault();
+
+        var request = new ClientCredentialsRequest(@Configuration["Spotify:CLIENT_ID"], @Configuration["Spotify:SECRET"]);
+
+        var response = await new OAuthClient(config).RequestToken(request);
+
+        var spotify = new SpotifyClient(response);
+
+        var track = await spotify.Tracks.Get(songCode);
+
+        songTitle = track.Name;
+
+
+        StateHasChanged();
+    }
+    
+}
