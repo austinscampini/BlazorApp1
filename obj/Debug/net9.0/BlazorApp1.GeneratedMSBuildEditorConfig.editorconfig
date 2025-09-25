@@ -24,6 +24,14 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/austi/OneDrive/Documents/Blazor Projects/BlazorApp1/Components/Pages/Album.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbGJ1bS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/austi/OneDrive/Documents/Blazor Projects/BlazorApp1/Components/Pages/Artist.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcnRpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/austi/OneDrive/Documents/Blazor Projects/BlazorApp1/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -32,12 +40,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/austi/OneDrive/Documents/Blazor Projects/BlazorApp1/Components/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/austi/OneDrive/Documents/Blazor Projects/BlazorApp1/Components/Pages/MusicPlayer.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNdXNpY1BsYXllci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/austi/OneDrive/Documents/Blazor Projects/BlazorApp1/Components/Pages/Playlist.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQbGF5bGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/austi/OneDrive/Documents/Blazor Projects/BlazorApp1/Components/Pages/UserProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyUHJvZmlsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/austi/OneDrive/Documents/Blazor Projects/BlazorApp1/Components/Pages/Weather.razor]
