@@ -1,10 +1,18 @@
 ﻿@page "/playlist"
 @using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments
 @using Microsoft.VisualBasic
+@using Newtonsoft.Json
 @using SpotifyAPI.Web
 @using SpotifyAPI;
+@using Swan
+@using Swan.Formatters
 @using Swan.Threading
 @using Microsoft.AspNetCore.WebUtilities;
+@using System.Diagnostics.CodeAnalysis
+@using System.Collections.Generic;
+@using System.Text.RegularExpressions
+
 @rendermode InteractiveServer
 @inject IConfiguration Configuration
 @inject NavigationManager NavigationManager
@@ -18,8 +26,7 @@ else
      <thead>
             <div>
                 <div class="playlist-header">
-                <div class="playlist-cover">♪</div>
-                </div>
+                <img class="playlist-cover" src="@imageUrl"></div>
                  <div class="playlist-info">
                     <h1 class="playlist-title">@playlistName</h1>
                     <span>@trackCount songs,</span> <span>about @playlistLengthHours hr @playlistLengthMinutes min</span>
@@ -50,49 +57,79 @@ else
     private int playlistLengthHours = 0;
     private int playlistLengthMinutes = 0;
 
+    private String imageUrl = "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228";
+
     protected override async Task OnInitializedAsync()
     {
 
-        await Task.Delay(10); 
+        await Task.Delay(1); 
+        if(@Configuration["Spotify:CLIENT_ID"] is null || @Configuration["Spotify:SECRET"] is null) {
+            FlagErrorPage();
+        }
         GetPlaylist();
     }
     private async void GetPlaylist() 
     {
-        var config = SpotifyClientConfig.CreateDefault();
+        try {
 
-        var request = new ClientCredentialsRequest(@Configuration["Spotify:CLIENT_ID"], @Configuration["Spotify:SECRET"]);
+            var config = SpotifyClientConfig.CreateDefault();
 
-        var response = await new OAuthClient(config).RequestToken(request);
+            var request = new ClientCredentialsRequest(@Configuration["Spotify:CLIENT_ID"], @Configuration["Spotify:SECRET"]);
 
-        var spotify = new SpotifyClient(response);
+            var response = await new OAuthClient(config).RequestToken(request);
 
-        var playlist = await spotify.Playlists.Get("4bdpl8pjuQ7O5MBtiXEzpM");
+            var spotify = new SpotifyClient(response);
 
-        int playlistTimeLength = 0;
+            var playlist = await spotify.Playlists.Get("4bdpl8pjuQ7O5MBtiXEzpM");
 
-        playlistName = playlist.Name;
-        playlistDescription = playlist.Description;
+            int playlistTimeLength = 0;
 
-        var allItems = await spotify.PaginateAll(playlist.Tracks);
+            playlistName = playlist.Name;
 
-        foreach (var item in allItems)
-        {
-            if (item.Track is FullTrack track)
+            getImageUrl(playlist.Images.ToJson().ToString());
+
+
+            playlistDescription = playlist.Description;
+
+            var allItems = await spotify.PaginateAll(playlist.Tracks);
+
+            foreach (var item in allItems)
             {
-                Tracks.Add(track);
-                trackCount++;
-                playlistTimeLength += (track.DurationMs/60000);
+                if (item.Track is FullTrack track)
+                {
+                    Tracks.Add(track);
+                    trackCount++;
+                    playlistTimeLength += (track.DurationMs/60000);
+                }
             }
+
+            playlistLengthHours = playlistTimeLength / 60;
+            playlistLengthMinutes =  playlistTimeLength % 60;
+
+            StateHasChanged();
+        } catch (NullReferenceException) {
+                FlagErrorPage();
+           
         }
-
-        playlistLengthHours = playlistTimeLength / 60;
-        playlistLengthMinutes =  playlistTimeLength % 60;
-
-        StateHasChanged();
     }
 
-    private void NavigateTo(String songCode)
+    private void NavigateTo(String refCode)
     {
-        NavigationManager.NavigateTo($"/musicplayer/{songCode}");
+        NavigationManager.NavigateTo($"/musicplayer/{refCode}");
     }
+
+    private void FlagErrorPage() {
+        NavigationManager.NavigateTo($"/error");
+    }
+
+    private void getImageUrl(String parialJson) {
+        var match = Regex.Match(parialJson, "([A-Za-z])");
+        if (match.Success)
+        {
+            imageUrl = match.Groups[1].Value;
+        }
+        
+    
+    }
+    
 }

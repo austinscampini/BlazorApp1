@@ -3,6 +3,8 @@
 @using System
 @using Microsoft.Extensions.Configuration
 
+@using BlazorApp1.Components.API
+
 @inject IConfiguration Configuration
 @inject NavigationManager navManager
 
@@ -25,8 +27,6 @@ else
   <a href="@_authUri">
     Login via Spotify
   </a>
-
-  
 }
 
 @code {
