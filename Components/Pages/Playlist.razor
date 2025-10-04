@@ -57,7 +57,8 @@ else
     private int playlistLengthHours = 0;
     private int playlistLengthMinutes = 0;
 
-    private String imageUrl = "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228";
+    private SpotifyAPI.Web.Image spotifyImage;
+    private String imageUrl;
 
     protected override async Task OnInitializedAsync()
     {
@@ -86,8 +87,11 @@ else
 
             playlistName = playlist.Name;
 
-            getImageUrl(playlist.Images.ToJson().ToString());
+            spotifyImage = playlist.Images.OrderByDescending(i => i.Width).FirstOrDefault();
 
+            if(spotifyImage != null) {
+                imageUrl = spotifyImage.Url;
+            }
 
             playlistDescription = playlist.Description;
 
@@ -120,16 +124,6 @@ else
 
     private void FlagErrorPage() {
         NavigationManager.NavigateTo($"/error");
-    }
-
-    private void getImageUrl(String parialJson) {
-        var match = Regex.Match(parialJson, "([A-Za-z])");
-        if (match.Success)
-        {
-            imageUrl = match.Groups[1].Value;
-        }
-        
-    
     }
     
 }
