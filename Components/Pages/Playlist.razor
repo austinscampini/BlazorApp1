@@ -63,7 +63,7 @@ else
     protected override async Task OnInitializedAsync()
     {
 
-        await Task.Delay(1); 
+        //await Task.Delay(1); 
         if(@Configuration["Spotify:CLIENT_ID"] is null || @Configuration["Spotify:SECRET"] is null) {
             FlagErrorPage();
         }

@@ -6,7 +6,7 @@
 @using BlazorApp1.Components.API
 
 @inject IConfiguration Configuration
-@inject NavigationManager navManager
+@inject NavigationManager NavigationManager
 
 <h1>Hello, world!</h1>
 
@@ -14,7 +14,7 @@
 
 </p>
 
-@if (_isAuthed && _me != null)
+@if (_me != null)
 {
   <h2>Welcome @_me.DisplayName!</h2>
   <p>
@@ -23,24 +23,28 @@
 }
 else
 {
-  <span>To get started:</span>
-  <a href="@_authUri">
-    Login via Spotify
-  </a>
+    <p>Loading...</p>
+    <p>@_totalPlaylistCount</p>
 }
 
 @code {
-  private bool _isAuthed = false;
+  /*private bool _isAuthed = false;
 
   private PrivateUser _me;
 
   private int? _totalPlaylistCount;
 
-  private Uri _authUri;
+  private Uri _authUri;*/
+
+  private PublicUser _me;
+
+  private int? _totalPlaylistCount;
+
+  private string User = "21tjo6kw2m3xmughfqwygtrfy";
 
   protected override void OnInitialized()
   {
-    if (!string.IsNullOrEmpty(@Configuration["Spotify:CLIENT_ID"]))
+    /*if (!string.IsNullOrEmpty(@Configuration["Spotify:CLIENT_ID"]))
     {
       var baseUri = navManager.ToAbsoluteUri("http://127.0.0.1:5267/");
 
@@ -49,12 +53,12 @@ else
         Scope = new[] { Scopes.PlaylistReadPrivate, Scopes.PlaylistReadCollaborative }
       };
       _authUri = loginRequest.ToUri();
-    }
+    }*/
   }
 
   protected override async Task OnInitializedAsync()
   {
-    var uri = new Uri("http://localhost:5267/");
+    /*var uri = new Uri("http://localhost:5267/");
     var maxLen = Math.Min(1, uri.Fragment.Length);
     Dictionary<string, string> fragmentParams = uri.Fragment.Substring(maxLen)?
       .Split("&", StringSplitOptions.RemoveEmptyEntries)?
@@ -70,6 +74,49 @@ else
 
       _me = await spotify.UserProfile.Current();
       _totalPlaylistCount = (await spotify.Playlists.CurrentUsers()).Total;
-    }
+    }*/
+
+        await Task.Delay(1); 
+        if(@Configuration["Spotify:CLIENT_ID"] is null || @Configuration["Spotify:SECRET"] is null) {
+            FlagErrorPage();
+        }
+        GetPlaylistCount();
   }
+
+
+
+  private async void GetPlaylistCount() 
+    {
+        try {
+
+            var config = SpotifyClientConfig.CreateDefault();
+
+            var request = new ClientCredentialsRequest(@Configuration["Spotify:CLIENT_ID"], @Configuration["Spotify:SECRET"]);
+
+            var response = await new OAuthClient(config).RequestToken(request);
+
+            var spotify = new SpotifyClient(response.AccessToken);
+
+            var playlists = await spotify.Playlists.GetUsers("21tjo6kw2m3xmughfqwygtrfy");
+
+            _totalPlaylistCount = playlists.Total;
+
+            //_totalPlaylistCount = await spotify.UserProfile.Get(User).;
+
+            StateHasChanged();
+        } catch (NullReferenceException) {
+                FlagErrorPage();
+           
+        }
+    }
+
+    /*private void NavigateTo(String refCode)
+    {
+        NavigationManager.NavigateTo($"/musicplayer/{refCode}");
+    }
+    */
+    private void FlagErrorPage() {
+        NavigationManager.NavigateTo($"/error");
+    }
+
 }
