@@ -19,23 +19,32 @@
 
 
 
-<h1 class="playlist-title">Welcome</h1>
+<h1 class="playlist-title">Welcome @userRefCode</h1>
+
+<p>Below is a list of your user information!</p>
 
 @if (@userRefCode != null)
 {
-    <PageTitle>asdfsaf</PageTitle>
+    <h3>Display Name: </h3>
+    <p class="song-artist">@displayName</p>
+    <h3>Follower Count: </h3>
+    <p class="song-artist">@followerCount</p>
+    <h3>Subscription Type: </h3>
+    <p class="song-artist">@subscriptionType</p>
 }
 else
 {
-    <p>Error: User may not exist. Please contact an administrator or check to see if </p>
+    <p class="song-info">Error: User may not exist. Please contact an administrator or check to see if username was correctly entered.</p>
 }
 
-<p>Powered by Spotify’s API. Built for you. Hit start to sync your sound.</p>
-<button type="button" @onclick="() => NavigateToPlaylists()">Get Started</button> 
+
 
 @code {
     [Parameter]    
     public String userRefCode{ get; set; }
+    private String displayName = "";
+    private int followerCount = 0;
+    private String subscriptionType = "";
 
     private int? _totalPlaylistCount;
     protected override void OnInitialized()
@@ -48,22 +57,36 @@ else
             if(@Configuration["Spotify:CLIENT_ID"] is null || @Configuration["Spotify:SECRET"] is null) {
                 FlagErrorPage();
             }
-            GetPlaylistCount();
+            GetUserProfile();
     }
 
 
 
-    private async void GetPlaylistCount() 
-        {
-          
-        }
+    private async void GetUserProfile() 
+    {
+         var config = SpotifyClientConfig.CreateDefault();
 
-        private void NavigateToPlaylists()
-        {
-            
-        }
-        private void FlagErrorPage() {
-            NavigationManager.NavigateTo($"/error");
-        }
+        var request = new ClientCredentialsRequest(@Configuration["Spotify:CLIENT_ID"], @Configuration["Spotify:SECRET"]);
+
+        var response = await new OAuthClient(config).RequestToken(request);
+
+        var spotify = new SpotifyClient(response);
+
+        var userprofile = await spotify.UserProfile.Get(userRefCode);
+
+        displayName = userprofile.DisplayName;
+        followerCount = userprofile.Followers.Total;
+        subscriptionType = userprofile.GetType().ToString();
+
+        StateHasChanged();
+    }
+
+    private void NavigateToPlaylists()
+    {
+        
+    }
+    private void FlagErrorPage() {
+        NavigationManager.NavigateTo($"/error");
+    }
 
 }

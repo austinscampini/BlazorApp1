@@ -18,12 +18,11 @@
 @inject NavigationManager NavigationManager
 
 <h1 class="playlist-title">Playlist Full View</h1>
-<p>Welcome to your playlist view. Below you should see all the playlists currently available to you</p>
+<p class="song-artist">Welcome to your playlist view. Below you should see all the playlists currently available to you</p>
 
 @if(_totalPlaylistCount != null) {
 
-    <p>You currently have a total count of @_totalPlaylistCount playlists. Click one of the playlists to see its contents</p>
-
+    <p>You currently have a total count of <bold class="song-artist">@_totalPlaylistCount</bold> playlists. <br /> Click one of the playlists to see its contents </p>
     <table>
     <!-- Track List -->
 

@@ -41,7 +41,7 @@ else
             @foreach (var Track in Tracks)
             {
 
-                <tr class="interactive-table" @onclick="() => NavigateTo(Track.Id)">
+                <tr class="interactive-table" @onclick="() => NavigateTo(playlistRefCode,Track.Id)">
                         <td>@Track.Album.Name</td>
                         <td>@Track.Name</td>
                 </tr>
@@ -120,9 +120,9 @@ else
         }
     }
 
-    private void NavigateTo(String refCode)
+    private void NavigateTo(String playlistID, String refCode)
     {
-        NavigationManager.NavigateTo($"/musicplayer/{refCode}");
+        NavigationManager.NavigateTo($"/musicplayer/{playlistID}/{refCode}");
     }
 
     private void FlagErrorPage() {

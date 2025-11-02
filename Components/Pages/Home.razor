@@ -11,23 +11,20 @@
 
 <h1 class="playlist-title">Blazor Music App</h1>
 
-@if (_me != null)
+@if (_totalPlaylistCount != null)
 {
-  <h2>Welcome @_me.DisplayName!</h2>
-  <p>
+  <h2>Welcome @User</h2>
+    <p class="song-artist">
     You have a grand total of @_totalPlaylistCount playlists!
   </p>
 }
 else
 {
-    <h2>Welcome user @User</h2>
-    <p>
-    You have a grand total of @_totalPlaylistCount playlists!
-  </p>
+    <p><Loading class=""></Loading></p>
 }
 
-<p>Powered by Spotify’s API. Built for you. Hit start to sync your sound.</p>
-<button type="button" @onclick="() => NavigateToPlaylists()">Get Started</button> 
+<p class="song-artist">This is powered by Spotify’s API. Built for you. Hit start to sync your sound.</p>
+<button class="button-17" role="button" @onclick="() => NavigateToPlaylists()">Get Started</button> 
 
 @code {
   /*private bool _isAuthed = false;
@@ -37,8 +34,6 @@ else
   private int? _totalPlaylistCount;
 
   private Uri _authUri;*/
-
-  private PublicUser _me;
 
   private int? _totalPlaylistCount;
 
