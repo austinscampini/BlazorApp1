@@ -1,4 +1,4 @@
-﻿@page "/playlist"
+﻿@page "/playlist/{playlistRefCode}"
 @using Microsoft.AspNetCore.Http.Extensions
 @using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments
 @using Microsoft.VisualBasic
@@ -26,7 +26,8 @@ else
      <thead>
             <div>
                 <div class="playlist-header">
-                <img class="playlist-cover" src="@imageUrl"></div>
+                    <img class="playlist-cover" src="@imageUrl">
+                </div>
                  <div class="playlist-info">
                     <h1 class="playlist-title">@playlistName</h1>
                     <span>@trackCount songs,</span> <span>about @playlistLengthHours hr @playlistLengthMinutes min</span>
@@ -50,6 +51,8 @@ else
 }
 
 @code {
+    [Parameter]    
+    public String playlistRefCode{ get; set; }
     private List<FullTrack> Tracks { get; set; } = new List<FullTrack>();
     private String playlistName = "Loading";
     private String playlistDescription = "Loading";
@@ -81,7 +84,7 @@ else
 
             var spotify = new SpotifyClient(response);
 
-            var playlist = await spotify.Playlists.Get("4bdpl8pjuQ7O5MBtiXEzpM");
+            var playlist = await spotify.Playlists.Get(playlistRefCode);
 
             int playlistTimeLength = 0;
 

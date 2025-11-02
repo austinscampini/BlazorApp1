@@ -1,0 +1,99 @@
+﻿@page "/playlistfulllist/{userRefCode}"
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments
+@using Microsoft.VisualBasic
+@using Newtonsoft.Json
+@using SpotifyAPI.Web
+@using SpotifyAPI;
+@using Swan
+@using Swan.Formatters
+@using Swan.Threading
+@using Microsoft.AspNetCore.WebUtilities;
+@using System.Diagnostics.CodeAnalysis
+@using System.Collections.Generic;
+@using System.Text.RegularExpressions
+
+@rendermode InteractiveServer
+@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
+
+<h1 class="playlist-title">Playlist Full View</h1>
+<p>Welcome to your playlist view. Below you should see all the playlists currently available to you</p>
+
+@if(_totalPlaylistCount != null) {
+
+    <p>You currently have a total count of @_totalPlaylistCount playlists. Click one of the playlists to see its contents</p>
+
+    <table>
+    <!-- Track List -->
+
+        <tbody>
+            @foreach (var item in PlaylistList)
+            {
+                <tr class="interactive-table" @onclick="() => NavigateToPlaylist(item.Id)">
+                        <td>@item.Name</td>
+                        <td>@item.Owner.DisplayName</td>
+                        <td>@item.Type</td>
+                        <td>@item.Tracks.Total</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else {
+    <h2>Loading...</h2>
+}
+
+@code {
+    [Parameter]    
+    public String userRefCode{ get; set; }
+    private List<FullPlaylist> PlaylistList { get; set; } = new List<FullPlaylist>();
+    private int? _totalPlaylistCount;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(@Configuration["Spotify:CLIENT_ID"] is null || @Configuration["Spotify:SECRET"] is null) {
+            FlagErrorPage();
+        }
+        GetPlaylistInfo();
+    }
+    private async void GetPlaylistInfo() 
+    {
+        try {
+
+            var config = SpotifyClientConfig.CreateDefault();
+
+            var request = new ClientCredentialsRequest(@Configuration["Spotify:CLIENT_ID"], @Configuration["Spotify:SECRET"]);
+
+            var response = await new OAuthClient(config).RequestToken(request);
+
+            var spotify = new SpotifyClient(response.AccessToken);
+
+            var playlists = await spotify.Playlists.GetUsers(userRefCode);
+
+            _totalPlaylistCount = playlists.Total;
+
+            var allItems = await spotify.PaginateAll(playlists);
+
+            foreach (var item in allItems)
+            {
+                PlaylistList.Add(item);   
+            }
+            StateHasChanged();
+        } catch (NullReferenceException) {
+                FlagErrorPage();
+           
+        }
+    }
+
+    private void NavigateToPlaylist(String refCode)
+    {
+        NavigationManager.NavigateTo($"/playlist/{refCode}");
+    }
+
+    private void FlagErrorPage() {
+        NavigationManager.NavigateTo($"/error");
+    }
+    
+}

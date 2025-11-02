@@ -1,0 +1,69 @@
+@page "/UserProfile/{userRefCode}/"
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments
+@using Microsoft.VisualBasic
+@using Newtonsoft.Json
+@using SpotifyAPI.Web
+@using SpotifyAPI;
+@using Swan
+@using Swan.Formatters
+@using Swan.Threading
+@using Microsoft.AspNetCore.WebUtilities;
+@using System.Diagnostics.CodeAnalysis
+@using System.Collections.Generic;
+@using System.Text.RegularExpressions
+
+@rendermode InteractiveServer
+@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
+
+
+
+<h1 class="playlist-title">Welcome</h1>
+
+@if (@userRefCode != null)
+{
+    <PageTitle>asdfsaf</PageTitle>
+}
+else
+{
+    <p>Error: User may not exist. Please contact an administrator or check to see if </p>
+}
+
+<p>Powered by Spotify’s API. Built for you. Hit start to sync your sound.</p>
+<button type="button" @onclick="() => NavigateToPlaylists()">Get Started</button> 
+
+@code {
+    [Parameter]    
+    public String userRefCode{ get; set; }
+
+    private int? _totalPlaylistCount;
+    protected override void OnInitialized()
+    {
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+            if(@Configuration["Spotify:CLIENT_ID"] is null || @Configuration["Spotify:SECRET"] is null) {
+                FlagErrorPage();
+            }
+            GetPlaylistCount();
+    }
+
+
+
+    private async void GetPlaylistCount() 
+        {
+          
+        }
+
+        private void NavigateToPlaylists()
+        {
+            
+        }
+        private void FlagErrorPage() {
+            NavigationManager.NavigateTo($"/error");
+        }
+
+}

@@ -5,27 +5,29 @@
 
 @using BlazorApp1.Components.API
 
+@rendermode InteractiveServer
 @inject IConfiguration Configuration
 @inject NavigationManager NavigationManager
 
-<h1>Hello, world!</h1>
-
-<p>
-
-</p>
+<h1 class="playlist-title">Blazor Music App</h1>
 
 @if (_me != null)
 {
   <h2>Welcome @_me.DisplayName!</h2>
   <p>
-    You have a grant total of @_totalPlaylistCount playlists!
+    You have a grand total of @_totalPlaylistCount playlists!
   </p>
 }
 else
 {
-    <p>Loading...</p>
-    <p>@_totalPlaylistCount</p>
+    <h2>Welcome user @User</h2>
+    <p>
+    You have a grand total of @_totalPlaylistCount playlists!
+  </p>
 }
+
+<p>Powered by Spotify’s API. Built for you. Hit start to sync your sound.</p>
+<button type="button" @onclick="() => NavigateToPlaylists()">Get Started</button> 
 
 @code {
   /*private bool _isAuthed = false;
@@ -76,7 +78,6 @@ else
       _totalPlaylistCount = (await spotify.Playlists.CurrentUsers()).Total;
     }*/
 
-        await Task.Delay(1); 
         if(@Configuration["Spotify:CLIENT_ID"] is null || @Configuration["Spotify:SECRET"] is null) {
             FlagErrorPage();
         }
@@ -97,7 +98,7 @@ else
 
             var spotify = new SpotifyClient(response.AccessToken);
 
-            var playlists = await spotify.Playlists.GetUsers("21tjo6kw2m3xmughfqwygtrfy");
+            var playlists = await spotify.Playlists.GetUsers(User);
 
             _totalPlaylistCount = playlists.Total;
 
@@ -110,11 +111,10 @@ else
         }
     }
 
-    /*private void NavigateTo(String refCode)
+    private void NavigateToPlaylists()
     {
-        NavigationManager.NavigateTo($"/musicplayer/{refCode}");
+        NavigationManager.NavigateTo($"/playlistfulllist/{User}");
     }
-    */
     private void FlagErrorPage() {
         NavigationManager.NavigateTo($"/error");
     }
